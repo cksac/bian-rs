@@ -8,14 +8,14 @@ use crate::enums::{
 use super::{string_as_f64, string_as_usize};
 use serde::{
     de::{SeqAccess, Unexpected, Visitor},
-    Deserialize, Deserializer,
+    Deserialize, Deserializer, Serialize,
 };
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EmptyResponse(HashMap<String, String>);
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UFuturesAccountBalance {
     pub account_alias: String,
@@ -32,7 +32,7 @@ pub struct UFuturesAccountBalance {
     pub max_withdraw_amount: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesAccountBalance {
     pub account_alias: String,
@@ -49,13 +49,13 @@ pub struct DFuturesAccountBalance {
     pub withdraw_available: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServerTime {
     pub server_time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RateLimit {
     /// 按照分钟计算
@@ -68,7 +68,7 @@ pub struct RateLimit {
     pub rate_limit_type: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", tag = "filterType")]
 pub enum FuturesSymbolFilter {
     #[serde(rename = "PRICE_FILTER")]
@@ -118,7 +118,7 @@ pub enum FuturesSymbolFilter {
     },
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", tag = "filterType")]
 pub enum SpotSymbolFilter {
     #[serde(rename = "PRICE_FILTER")]
@@ -200,14 +200,14 @@ pub enum SpotSymbolFilter {
     },
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeResponse {
     pub code: usize,
     pub msg: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UFuturesSymbol {
     /// 交易对
@@ -253,7 +253,7 @@ pub struct UFuturesSymbol {
     pub time_in_force: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesSymbol {
     /// 交易对
@@ -294,7 +294,7 @@ pub struct DFuturesSymbol {
     pub time_in_force: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotSymbol {
     /// 交易对
@@ -316,7 +316,7 @@ pub struct SpotSymbol {
     pub permissions: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UFuturesExchangeInfo {
     pub exchange_filters: Vec<String>,
@@ -327,7 +327,7 @@ pub struct UFuturesExchangeInfo {
     pub timezone: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesExchangeInfo {
     pub exchange_filters: Vec<String>,
@@ -337,7 +337,7 @@ pub struct DFuturesExchangeInfo {
     pub timezone: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotExchangeInfo {
     pub exchange_filters: Vec<String>,
@@ -347,7 +347,7 @@ pub struct SpotExchangeInfo {
 }
 
 /// (价格, 数量)
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct DepthOrder(pub f64, pub f64);
 
 impl<'de> Deserialize<'de> for DepthOrder {
@@ -387,7 +387,7 @@ impl<'de> Visitor<'de> for DepthOrderVisitor {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FuturesDepth {
     pub last_update_id: usize,
@@ -403,7 +403,7 @@ pub struct FuturesDepth {
     pub asks: Vec<DepthOrder>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotDepth {
     pub last_update_id: usize,
@@ -413,7 +413,7 @@ pub struct SpotDepth {
     pub asks: Vec<DepthOrder>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UFuturesTrade {
     pub id: usize,
@@ -427,7 +427,7 @@ pub struct UFuturesTrade {
     pub is_buyer_maker: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesTrade {
     pub id: usize,
@@ -441,7 +441,7 @@ pub struct DFuturesTrade {
     pub is_buyer_maker: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotTrade {
     pub id: usize,
@@ -455,7 +455,7 @@ pub struct SpotTrade {
     pub is_best_match: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UFuturesHistoricalTrade {
     pub id: usize,
@@ -469,7 +469,7 @@ pub struct UFuturesHistoricalTrade {
     pub is_buyer_maker: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesHistoricalTrade {
     pub id: usize,
@@ -483,7 +483,7 @@ pub struct DFuturesHistoricalTrade {
     pub is_buyer_maker: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotHistoricalTrade {
     pub id: usize,
@@ -498,7 +498,7 @@ pub struct SpotHistoricalTrade {
     pub is_best_match: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AggTrade {
     pub a: i64,
@@ -602,7 +602,7 @@ impl<'de> Visitor<'de> for KlineVisitor {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UPremiumIndex {
     pub symbol: String,
@@ -618,7 +618,7 @@ pub struct UPremiumIndex {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DPremiumIndex {
     /// 交易对
@@ -646,7 +646,7 @@ pub struct DPremiumIndex {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FundingRate {
     pub symbol: String,
@@ -655,7 +655,7 @@ pub struct FundingRate {
     pub funding_time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct H24ticker {
     pub symbol: String,
@@ -686,7 +686,7 @@ pub struct H24ticker {
     pub count: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesH24ticker {
     pub symbol: String,
@@ -718,7 +718,7 @@ pub struct DFuturesH24ticker {
     pub count: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FuturesPrice {
     pub symbol: String,
@@ -727,7 +727,7 @@ pub struct FuturesPrice {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesPrice {
     pub symbol: String,
@@ -737,7 +737,7 @@ pub struct DFuturesPrice {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotPrice {
     pub symbol: String,
@@ -745,7 +745,7 @@ pub struct SpotPrice {
     pub price: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AvgPrice {
     pub mins: usize,
@@ -753,7 +753,7 @@ pub struct AvgPrice {
     pub price: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UFuturesBookTicker {
     pub symbol: String,
@@ -768,7 +768,7 @@ pub struct UFuturesBookTicker {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DFuturesBookTicker {
     pub symbol: String,
@@ -784,7 +784,7 @@ pub struct DFuturesBookTicker {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotBookTicker {
     pub symbol: String,
@@ -798,7 +798,7 @@ pub struct SpotBookTicker {
     pub ask_qty: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ForceOrder {
     pub symbol: String,
@@ -817,7 +817,7 @@ pub struct ForceOrder {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UOpenInterest {
     /// 未平仓合约数量
@@ -828,7 +828,7 @@ pub struct UOpenInterest {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DOpenInterest {
     /// 未平仓合约数量
@@ -841,7 +841,7 @@ pub struct DOpenInterest {
     pub time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UOpenInterestHist {
     pub symbol: String,
@@ -853,7 +853,7 @@ pub struct UOpenInterestHist {
     pub timestamp: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DOpenInterestHist {
     pub pair: String,
@@ -866,7 +866,7 @@ pub struct DOpenInterestHist {
     pub timestamp: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LongShortRatio {
     pub symbol: String,
@@ -880,7 +880,7 @@ pub struct LongShortRatio {
     pub timestamp: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TakerLongShortRatio {
     #[serde(deserialize_with = "string_as_f64")]
@@ -893,7 +893,7 @@ pub struct TakerLongShortRatio {
     pub timestamp: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TakerBuySellVol {
     pub pair: String,
@@ -909,7 +909,7 @@ pub struct TakerBuySellVol {
     pub timestamp: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IndexInfo {
     pub symbol: String,
@@ -917,7 +917,7 @@ pub struct IndexInfo {
     pub base_asset_list: Vec<BaseAsset>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BaseAsset {
     pub base_asset: String,
@@ -927,14 +927,14 @@ pub struct BaseAsset {
     pub weight_in_percentage: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PositionSide {
     /// "true": 双向持仓模式；"false": 单向持仓模式
     pub dual_side_position: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FuturesOrder {
     pub client_order_id: String,
@@ -970,7 +970,7 @@ pub struct FuturesOrder {
     pub price_protect: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotOrderAck {
     /// 交易对
@@ -985,7 +985,7 @@ pub struct SpotOrderAck {
     pub transact_time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotOrderResult {
     /// 交易对
@@ -1021,7 +1021,7 @@ pub struct SpotOrderResult {
     pub side: OrderSide,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotOrderFull {
     /// 交易对
@@ -1059,7 +1059,7 @@ pub struct SpotOrderFull {
     pub fills: Vec<OrderFill>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OrderFill {
     /// 交易的价格
@@ -1075,7 +1075,7 @@ pub struct OrderFill {
     pub commission_asset: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", untagged)]
 pub enum SpotOrder {
     Ack(SpotOrderAck),
@@ -1083,7 +1083,7 @@ pub enum SpotOrder {
     Full(SpotOrderFull),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct QuerySpotOrder {
     /// 交易对
@@ -1132,7 +1132,7 @@ pub struct QuerySpotOrder {
     pub orig_quote_order_qty: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotOpOrder {
     /// 交易对
@@ -1167,21 +1167,21 @@ pub struct SpotOpOrder {
     pub side: OrderSide,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum CancelSpotOrder {
     Spot(SpotOrder),
     Oco(OcoOrder),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", untagged)]
 pub enum BatchOrderResponse {
     Order(FuturesOrder),
     Code(CodeResponse),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OcoOrder {
     pub order_list_id: usize,
@@ -1197,7 +1197,7 @@ pub struct OcoOrder {
     pub order_reports: Vec<OcoOrderReport>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OcoOrderDesc {
     pub symbol: String,
@@ -1205,7 +1205,7 @@ pub struct OcoOrderDesc {
     pub client_order_id: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OcoOrderReport {
     pub symbol: String,
@@ -1229,7 +1229,7 @@ pub struct OcoOrderReport {
     pub stop_price: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CountdownCancel {
     pub symbol: String,
@@ -1237,7 +1237,7 @@ pub struct CountdownCancel {
     pub countdown_time: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountAsset {
     ///资产
@@ -1277,7 +1277,7 @@ pub struct AccountAsset {
     pub max_withdraw_amount: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountPosition {
     /// 交易对
@@ -1315,7 +1315,7 @@ pub struct AccountPosition {
     pub position_amt: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotAccount {
     pub maker_commission: usize,
@@ -1331,7 +1331,7 @@ pub struct SpotAccount {
     pub permissions: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SpotBalance {
     pub asset: String,
@@ -1341,7 +1341,7 @@ pub struct SpotBalance {
     pub locked: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FuturesAccount {
     /// 手续费等级
@@ -1394,7 +1394,7 @@ pub struct FuturesAccount {
     pub positions: Vec<AccountPosition>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Leverage {
     pub symbol: String,
@@ -1403,7 +1403,7 @@ pub struct Leverage {
     pub max_notional_value: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PositionMargin {
     pub amount: f64,
@@ -1414,7 +1414,7 @@ pub struct PositionMargin {
     pub margin_type: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PositionMarginHist {
     #[serde(deserialize_with = "string_as_f64")]
@@ -1428,7 +1428,7 @@ pub struct PositionMarginHist {
     pub position_side: PositionSide,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PositionRisk {
     // 开仓均价
@@ -1465,7 +1465,7 @@ pub struct PositionRisk {
     pub position_side: PositionSide,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserFuturesTrade {
     /// 是否是买方
@@ -1503,7 +1503,7 @@ pub struct UserFuturesTrade {
     time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserSpotTrade {
     pub symbol: String,
@@ -1525,7 +1525,7 @@ pub struct UserSpotTrade {
     pub is_best_match: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ListenKey {
     pub listen_key: String,

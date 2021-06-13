@@ -6,7 +6,7 @@ use crate::enums::{
     TimeInForce,
 };
 use crate::error::{APIError, BianResult};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tungstenite::client::AutoGenericStream;
 
 pub trait WebsocketResponse<R: serde::de::DeserializeOwned> {
@@ -15,14 +15,14 @@ pub trait WebsocketResponse<R: serde::de::DeserializeOwned> {
     fn close_stream(&mut self);
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MultiResponse<R> {
     pub stream: String,
     pub data: R,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSAggTrade {
     /// 事件类型 aggTrade
@@ -57,7 +57,7 @@ pub struct WSAggTrade {
     pub is_market: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSTrade {
     /// 事件类型 trade
@@ -70,7 +70,7 @@ pub struct WSTrade {
     #[serde(rename = "s")]
     pub symbol: String,
     /// 交易ID
-    #[serde(rename="t")]
+    #[serde(rename = "t")]
     pub transaction_id: usize,
     /// 成交价格
     #[serde(rename = "p", deserialize_with = "string_as_f64")]
@@ -92,7 +92,7 @@ pub struct WSTrade {
     pub is_market: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSPrice {
     /// 事件类型 price
@@ -121,7 +121,7 @@ pub struct WSPrice {
     pub trade_time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSKline {
     /// 事件类型 kline
@@ -138,7 +138,7 @@ pub struct WSKline {
     pub data: KData,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSContinuousKline {
     /// 事件类型 continuous_kline
@@ -158,7 +158,7 @@ pub struct WSContinuousKline {
     pub data: KData,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KData {
     /// 这根K线的起始时间
@@ -214,7 +214,7 @@ pub struct KData {
     pub __ignore: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSMiniTicker {
     /// 事件类型 24hrMiniTicker
@@ -246,7 +246,7 @@ pub struct WSMiniTicker {
     pub amount: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSFuturesTicker {
     /// 事件类型 24hrTicker
@@ -302,7 +302,7 @@ pub struct WSFuturesTicker {
     pub trade_count: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSSpotTicker {
     /// 事件类型 24hrTicker
@@ -373,7 +373,7 @@ pub struct WSSpotTicker {
     pub trade_count: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSFuturesBookTicker {
     /// 事件类型
@@ -405,7 +405,7 @@ pub struct WSFuturesBookTicker {
     pub sell_amount: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSSpotBookTicker {
     #[serde(rename = "u")]
@@ -426,7 +426,7 @@ pub struct WSSpotBookTicker {
     pub lowest_qty: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSForceOrder {
     // 事件类型
@@ -439,7 +439,7 @@ pub struct WSForceOrder {
     pub order_data: OrderData,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OrderData {
     /// 交易对
@@ -478,7 +478,7 @@ pub struct OrderData {
 }
 
 /// 有限档深度信息
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSFuturesDepth {
     /// 事件类型
@@ -510,7 +510,7 @@ pub struct WSFuturesDepth {
 }
 
 /// 有限档深度信息
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSSpotDepth {
     /// 更新ID
@@ -522,7 +522,7 @@ pub struct WSSpotDepth {
 }
 
 /// 增量深度信息
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSSpotIncrementDepth {
     /// 事件类型
@@ -546,7 +546,7 @@ pub struct WSSpotIncrementDepth {
     pub asks: Vec<DepthOrder>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSListenKeyExpired {
     /// 事件类型
@@ -557,7 +557,7 @@ pub struct WSListenKeyExpired {
     pub event_time: i64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSMarginPosition {
     /// symbol
@@ -586,7 +586,7 @@ pub struct WSMarginPosition {
     pub maint_margin: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSMarginCall {
     /// 事件类型
@@ -603,7 +603,7 @@ pub struct WSMarginCall {
     pub position: Vec<WSMarginPosition>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSAccountEvent {
     // TODO make it enum
@@ -616,7 +616,7 @@ pub struct WSAccountEvent {
     pub positions: Vec<WSPosition>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSBalance {
     /// 资产名称
@@ -630,7 +630,7 @@ pub struct WSBalance {
     pub cw: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSPosition {
     /// 交易对
@@ -659,7 +659,7 @@ pub struct WSPosition {
     pub position_side: PositionDirect,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSAccountUpdate {
     /// 事件类型
@@ -676,7 +676,7 @@ pub struct WSAccountUpdate {
     pub event: WSAccountEvent,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSOrderUpdate {
     /// 事件类型
@@ -694,7 +694,7 @@ pub struct WSOrderUpdate {
 }
 
 #[allow(non_snake_case)]
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSOrderEvent {
     /// 交易对
@@ -776,7 +776,7 @@ pub struct WSOrderEvent {
     pub rp: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSLeverageUpdate {
     /// 事件类型
@@ -792,7 +792,7 @@ pub struct WSLeverageUpdate {
     pub event: WSLeverageEvent,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WSLeverageEvent {
     #[serde(rename = "s")]
@@ -801,7 +801,7 @@ pub struct WSLeverageEvent {
     pub leverage: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum WSUserStream {
     ListenKeyExpired(WSListenKeyExpired),
